@@ -55,18 +55,12 @@ export default function LoginForm() {
 					<Title>로그인</Title>
 					<Row>
 						<Label>EMAIL</Label>
-						<Input
-							type="text"
-							//name="email"
-							id="email"
-							onChange={handleFormChange}
-						></Input>
+						<Input type="text" id="email" onChange={handleFormChange}></Input>
 					</Row>
 					<Row>
 						<Label>PASSWORD</Label>
 						<Input
 							type="password"
-							//name="password"
 							onChange={handleFormChange}
 							id="password"
 						></Input>
@@ -87,7 +81,6 @@ const Title = styled.h1`
 const Row = styled.div`
 	display: flex;
 	flex-direction: row;
-	//justify-content: space-between;
 	margin-bottom: 2rem;
 `;
 const Button = styled.button`
@@ -102,7 +95,6 @@ const Button = styled.button`
 const Label = styled.label`
 	font-size: 20px;
 	margin-right: auto;
-	//margin- auto는 display가 block일때만 사용가능
 `;
 const Input = styled.input`
 	width: 75%;
