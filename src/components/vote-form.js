@@ -71,22 +71,21 @@ const Row = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-between;
 `;
 const Button = styled.button`
 	background-color: navy;
 	color: white;
-	font-size: 2rem;
+	font-size: 1.5rem;
 	padding: 0.5rem 1rem;
 	border-style: none;
 	border-radius: 1rem;
 `;
 const Rank = styled.strong`
-	font-size: 2.5rem;
+	font-size: 1.5rem;
 	margin: 0rem 4rem 1rem 0rem;
 `;
 const CandiName = styled.p`
-	font-size: 2.5rem;
+	font-size: 1.5rem;
 	display: block;
 	margin: 0rem auto 1rem 0rem;
 `;
@@ -96,6 +95,7 @@ const VoteArea = styled.div`
 	border: 1px solid black;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 `;
 const Title = styled.span`
 	font-size: 3rem;
