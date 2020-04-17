@@ -44,7 +44,7 @@ function VoteForm() {
 				<RedTitle>프론트엔드 인기쟁이</RedTitle>는 누구?
 			</Title>
 			<SubTitle>CEOS 프론트엔드 개발자 인기 순위 및 투표 창입니다.</SubTitle>
-			<VoteWrap>
+			<VoteArea>
 				{candi
 					.sort((person1, person2) => {
 						return person2.voteCount - person1.voteCount;
@@ -59,7 +59,7 @@ function VoteForm() {
 							<Button onClick={() => voteCandidates(person)}>투표</Button>
 						</Row>
 					))}
-			</VoteWrap>
+			</VoteArea>
 		</Wrapper>
 	);
 }
@@ -90,7 +90,7 @@ const CandiName = styled.p`
 	display: block;
 	margin: 0rem auto 1rem 0rem;
 `;
-const VoteWrap = styled.div`
+const VoteArea = styled.div`
 	width: 100%;
 	padding: 5rem 10rem;
 	border: 1px solid black;
