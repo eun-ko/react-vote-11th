@@ -4,7 +4,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 function VoteForm() {
-	const [candi, setCandi] = useState([]);
+	const [candidates, setCandidates] = useState([]);
 	const [voteCount, setVoteCount] = useState();
 
 	useEffect(() => {
@@ -13,23 +13,22 @@ function VoteForm() {
 
 	const getCandidates = async () => {
 		await axios
-			.get(process.env.API_HOST + '/candidates/', candi)
+			.get(process.env.API_HOST + '/candidates/', candidates)
 			.then(({ data }) => {
-				setCandi(data);
+				setCandidates(data);
 			})
-			.catch(function (error) {
+			.catch((error) => {
 				console.log(error);
 			});
 	};
 
-	const voteCandidates = async (person) => {
-		const newUrl =
-			process.env.API_HOST + '/candidates/' + person._id + '/vote/';
+	const voteCandidates = async (candidate) => {
+		const newUrl = `${process.env.API_HOST}/candidates/${candidate._id}/vote/`;
 		await axios
 			.put(newUrl, voteCount)
 			.then(({ data }) => {
 				setVoteCount(data);
-				alert(person.name + '님에게 투표 완료!');
+				alert(candidate.name + '님에게 투표 완료!');
 				getCandidates();
 			})
 			.catch(function (error) {
@@ -37,7 +36,7 @@ function VoteForm() {
 				alert('투표 실패!');
 			});
 	};
-	let i = 1;
+
 	return (
 		<Wrapper>
 			<Title>
@@ -45,13 +44,11 @@ function VoteForm() {
 			</Title>
 			<SubTitle>CEOS 프론트엔드 개발자 인기 순위 및 투표 창입니다.</SubTitle>
 			<VoteArea>
-				{candi
-					.sort((person1, person2) => {
-						return person2.voteCount - person1.voteCount;
-					})
-					.map((person) => (
-						<Row key={JSON.stringify(person)}>
-							<Rank>{i++}위:</Rank>
+				{candidates
+					.sort((person1, person2) => person2.voteCount - person1.voteCount)
+					.map((person, index) => (
+						<Row key={person._id}>
+							<Rank>{index + 1}위:</Rank>
 							<CandiName>
 								{person.name}
 								<br />[{person.voteCount}표]
@@ -63,10 +60,7 @@ function VoteForm() {
 		</Wrapper>
 	);
 }
-export default React.memo(
-	VoteForm,
-	(prev, next) => prev.voteCount === next.voteCount
-);
+export default React.memo(VoteForm);
 const Row = styled.div`
 	display: flex;
 	flex-direction: row;

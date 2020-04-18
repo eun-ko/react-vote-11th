@@ -5,71 +5,70 @@ import axios from 'axios';
 import VoteForm from './vote-form';
 
 export default function LoginForm() {
-	const [logForm, setLogForm] = useState({ email: '', password: '' });
-	const [isloged, setloged] = useState(false);
+	const [LoginForm, setLoginForm] = useState({ email: '', password: '' });
+	const [isloggedIn, setloggedIn] = useState(false);
 
-	const erasePW = () => {
-		document.getElementById('password').value = '';
-	};
-
-	const eraseEmail = () => {
-		document.getElementById('email').value = '';
+	const erase = (name) => () => {
+		setLoginForm({
+			...loginForm,
+			[name]: '',
+		});
 	};
 
 	const handleFormChange = (e) => {
-		setLogForm({ ...logForm, [e.target.id]: e.target.value });
+		setLoginForm({ ...LoginForm, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit = (logForm) => {
-		const { email, password } = logForm;
+	const handleSubmit = () => {
+		const { email, password } = LoginForm;
 		if (email === '' || password === '') {
 			alert('모든 항목을 입력해주세요!');
 			return false;
-		} else {
-			axios
-				.post(process.env.API_HOST + '/auth/signin/', logForm)
-				.then(function (response) {
-					console.log(response);
-					setloged(true);
-					alert('로그인 성공!');
-				})
-				.catch(function (error) {
-					if (error.response.status === 404) {
-						console.log('unauthorized, logging out ...');
-						alert('이메일이 존재하지 않습니다.');
-						eraseEmail();
-						erasePW();
-					} else if (error.response.status === 422) {
-						alert('비밀번호가 일치하지 않습니다!');
-						erasePW();
-					}
-					return Promise.reject(error.response);
-				});
 		}
+
+		axios
+			.post(process.env.API_HOST + '/auth/signin/', LoginForm)
+			.then((response) => {
+				console.log(response);
+				setloggedIn(true);
+				alert('로그인 성공!');
+			})
+			.catch((error) => {
+				if (error.response.status === 404) {
+					alert('이메일이 존재하지 않습니다.');
+					erase('email')();
+					erase('password')();
+				}
+				if (error.response.status === 422) {
+					alert('비밀번호가 일치하지 않습니다!');
+					erase('email')();
+				}
+				return Promise.reject(error.response);
+			});
 	};
 
 	return (
 		<div>
-			{!isloged && (
+			{!isloggedIn && (
 				<Wrapper>
 					<Title>로그인</Title>
 					<Row>
 						<Label>EMAIL</Label>
-						<Input type="text" id="email" onChange={handleFormChange}></Input>
+						<Input type="text" name="email" onChange={handleFormChange}></Input>
 					</Row>
 					<Row>
 						<Label>PASSWORD</Label>
 						<Input
 							type="password"
 							onChange={handleFormChange}
-							id="password"
+							name="password"
 						></Input>
 					</Row>
-					<Button onClick={() => handleSubmit(logForm)}>로그인</Button>
+					<Button onClick={() => handleSubmit()}>로그인</Button>
 				</Wrapper>
 			)}
 
-			{isloged && <VoteForm />}
+			{isloggedIn && <VoteForm />}
 		</div>
 	);
 }
